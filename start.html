@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{message}} </h1>
+        <button @click="clickMe">Click</button>
+    </div>
+    <div id="count">
+        Counter: {{counter}}
+        <button @click="startIt">Start</button>
+        <button @click="stopIt">Stop</button>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data(){
+                return {
+                    message: "Hello World!"
+                };
+            },
+            methods: {
+                clickMe(){
+                    console.log("Button clicked!");
+                    this.message = "Updated World!";
+                },
+            },
+        });
+
+        const counter = {
+            data(){
+                return {
+                    counter: 0,
+                    intervalId: null
+                };
+            },
+            mounted(){
+                this.startIt()    
+            },
+            methods: {
+                startIt(){
+                    console.log("starting..........")
+                    this.intervalId = setInterval(()=> {
+                        this.counter++;
+                    }, 1000);
+                },
+                stopIt(){
+                    clearInterval(this.intervalId)
+                    this.counter = 0
+                    this.intervalId = setInterval(()=> {
+                        this.counter++;
+                    }, 1000);
+                }
+            },
+            beforeUnmount() {
+                this.stopIt()
+            }
+        }
+        Vue.createApp(counter).mount('#count');
+        app.mount('#app');
+    </script>
+</body>
+</html>
