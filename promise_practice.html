@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise</title>
+</head>
+<body>
+
+    <p id="temp"></p>
+    <p id="temp2"></p>
+    <button id="press">Click!</button>
+
+    <script>
+
+        document.getElementById("press").addEventListener("click",
+            ()=>{dlay().then(()=>{
+                console.log("promise MADE!");
+                })}
+        );
+
+        function dlayOperation(){
+            console.log("delay operation!");
+            document.getElementById("temp2").innerHTML = "2 seconds have passed!";
+        }
+
+        function dlay(){
+            return new Promise(function(resolve, reject){
+                setTimeout(()=>{
+                    console.log("dlay Promise pending!");
+                    dlayOperation();
+                    resolve("Done locally for dlay");
+                }, 2000);
+            });
+        }
+
+
+
+        function getWeather(){
+            return new Promise(function(resolve, reject){
+                setTimeout(()=>{
+                    resolve('Sunny');
+                }, 1000);
+            });
+        }
+
+        function getWeatherResult(data){
+            return new Promise((resolve)=>{
+                setTimeout(()=>{
+                    resolve(`The weather today is ${data}.`)
+                }, 300);
+            });
+        }
+
+        function onSuccess(data){
+            console.log(`SUCCESSFUL: ${data}`);
+            document.getElementById('temp').innerHTML = data;
+        }
+
+        function onError(data){
+            console.log(`Error: ${data}.`);
+        }
+
+        getWeather().then(getWeatherResult).then(onSuccess).catch(onError).finally(()=> console.log("ALL DONE SUCCESSFULLY!"));
+    </script>
+</body>
+</html>
